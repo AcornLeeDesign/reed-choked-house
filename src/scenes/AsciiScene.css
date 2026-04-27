@@ -1,0 +1,33 @@
+.ascii-scene {
+  position: absolute;
+  inset: 0;
+  /* Intentionally transparent: the chrome (.story-layout) owns the page
+     background and animates it on dark/light scene swaps. If this element
+     painted its own #fff, the upper half of the screen would stack two
+     darkness sources during a fade (chrome going dark + ascii layer fading
+     out) and visibly outpace the bottom half, which only has one. */
+  background: transparent;
+  overflow: hidden;
+  cursor: default;
+  --mx: 0;
+  --my: 0;
+}
+
+.ascii-scene__pre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: pre;
+  user-select: none;
+  pointer-events: none;
+  transform:
+    translate(-50%, -50%)
+    translate(calc(var(--mx) * var(--parallax)), calc(var(--my) * var(--parallax)));
+  transition: transform 240ms ease-out;
+  will-change: transform;
+}

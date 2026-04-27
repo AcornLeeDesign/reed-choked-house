@@ -1,0 +1,60 @@
+/* Burning scene escapes the .story-layout__scene bounds and fills the entire
+   viewport (the previous behaviour painted only the upper half dark). The
+   floating script card in .story-layout__bar stacks above via z-index in
+   StoryLayout.css. */
+.burning-scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Dark, slightly-warm wash that the smoke ASCII rides on. Subtle radial
+   bias toward the lower-centre so the frame feels weighted toward the
+   floor (where the fire would actually be) rather than evenly black. */
+.burning-scene__bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 65%, #1c0d09 0%, #0a0503 55%, #000 100%);
+}
+
+/* Wraps the smoke ASCII + soot grain so they can fade in together after
+   the 4s post-sleep delay, riding atop the already-visible dark wash. */
+.burning-scene__smoke {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1200ms ease-in;
+}
+.burning-scene__smoke--visible {
+  opacity: 1;
+}
+
+/* Animated SVG grain. baseFrequency tuned to look like fine soot, not large
+   blobs; multiply blend keeps it darkening rather than washing the smoke
+   tones out. The keyframe jitters position+scale on a 2-step cadence so it
+   reads as flicker rather than a smooth pan. */
+.burning-scene__noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.85 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 240px 240px;
+  mix-blend-mode: multiply;
+  opacity: 0.55;
+  animation: burning-grain 110ms steps(2, end) infinite;
+  will-change: transform;
+}
+
+@keyframes burning-grain {
+  0%   { transform: translate(0, 0)       scale(1);    }
+  20%  { transform: translate(-3%, 2%)    scale(1.05); }
+  40%  { transform: translate(3%, -2%)    scale(1.02); }
+  60%  { transform: translate(-2%, -3%)   scale(1.04); }
+  80%  { transform: translate(2%, 3%)     scale(1.03); }
+  100% { transform: translate(0, 0)       scale(1);    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burning-scene__noise { animation: none; }
+}

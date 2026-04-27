@@ -1,0 +1,13 @@
+/* Heaven scene escapes the .story-layout__scene bounds and fills the entire
+   viewport (otherwise the cloud-floor ASCII would be clipped to the upper
+   region above the script card and scaled to that smaller box instead of
+   viewport height). The floating script card in .story-layout__bar still
+   stacks above via the z-index: 2 in StoryLayout.css, so the bottom of the
+   sky simply continues behind the translucent card. Mirrors the
+   .burning-scene pattern. */
+.heaven-scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
