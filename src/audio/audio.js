@@ -22,7 +22,7 @@
 // currently active.
 
 import clickSoundUrl from './click.mp3'
-import musicUrl from './pure-elegance-theo-gerard-main-version-25156-00-49.mp3'
+import musicUrl from './pure-elegance-theo-gerard-main-version-25156-00-49-128k.mp3'
 
 const FIRE_SCENE_ID = 'burning-reed-house'
 
