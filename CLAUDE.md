@@ -35,7 +35,7 @@ The user, as the ghost, lives the *waiting* — the house, the reeds, the season
 
 `App.jsx` is load-bearing — it mounts `<StoryLayout />`, which is the top-level shell that drives the story graph and renders the active scene plus the dialogue/choice card.
 
-> `three`, `@react-three/fiber`, and `@react-three/drei` still appear in `package.json` from an earlier phase but are **not imported anywhere**. Don't reach for them; safe to remove next time `package.json` is touched. The runtime is plain React + DOM.
+The runtime is plain React + DOM. An earlier phase of this project used Three.js / @react-three/fiber / @react-three/drei; those deps have been removed and the 3D approach is retired (see house rule §8). Don't reintroduce them.
 
 ## 4. ASCII scenes (image → typographic scene)
 
