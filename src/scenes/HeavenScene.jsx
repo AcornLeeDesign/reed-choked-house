@@ -10,11 +10,12 @@ export default function HeavenScene() {
         data={data}
         density={1.85}
         parallaxPx={6}
-        // Slower, sparser char-alternation so the cloud floor feels like it's
-        // drifting rather than shimmering — this is the ascension beat, the
-        // last image before pure luminance.
-        swapRate={0.002}
-        tickMs={260}
+        // Same upper-bound swapRate as BurningScene (see CLAUDE.md §4) but a
+        // slower 140ms tick so the cloud floor feels like it's drifting
+        // rather than shimmering — this is the ascension beat, the last
+        // image before pure luminance.
+        swapRate={0.1}
+        tickMs={140}
         palette={HEAVEN}
       />
     </div>

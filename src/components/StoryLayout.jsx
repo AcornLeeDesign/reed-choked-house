@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, lazy, Suspense } from 'react'
 import { GRAPH, ENTRY } from '../story/graph'
 import RoomScene from '../scenes/RoomScene'
+import audio from '../audio/audio'
 import './StoryLayout.css'
 
 // Lazy so the initial bundle stays small (per claude-docs/CLAUDE.md §6),
@@ -205,7 +206,17 @@ export default function StoryLayout() {
   // THEN settle to 'idle'. There is intentionally no overlap between the
   // two scenes — at any moment only one is mounted in the scene area.
   useEffect(() => {
+    // Audio: route ambience for the new scene every time. Safe to call
+    // before the first user gesture — the engine will just record the
+    // active sceneId and bring up the layers when it's allowed to.
+    audio.setScene(sceneId)
+
     if (prevIdRef.current === sceneId) return
+
+    // Whoosh only fires on actual scene changes, never on initial mount —
+    // the prevIdRef guard above handles that.
+    audio.whoosh()
+
     setPreviousSceneId(prevIdRef.current)
     setSceneEpoch(e => e + 1)
     setPhase('out')
@@ -264,6 +275,11 @@ export default function StoryLayout() {
   }
 
   // ── Handlers ────────────────────────────────────────────────────────
+
+  // The click *sound* is fired from each button's onPointerDown so it lands
+  // on press rather than release — see the render helpers below. The
+  // handlers themselves stay bound to onClick so click semantics (drag-off
+  // cancel, keyboard Enter/Space activation) keep working normally.
 
   function handleContinue() {
     if (node.type === 'dialogue') {
@@ -334,6 +350,7 @@ export default function StoryLayout() {
     <button
       key={i}
       className="choice-option"
+      onPointerDown={() => audio.click()}
       onClick={() => handleChoice(choice)}
     >
       <span className="choice-badge">{LETTERS[i] ?? String(i + 1)}</span>
@@ -359,6 +376,7 @@ export default function StoryLayout() {
       <button
         key={task.id}
         className={cls}
+        onPointerDown={() => !inert && audio.click()}
         onClick={() => !inert && handleTask(task)}
         disabled={inert}
       >
@@ -431,6 +449,7 @@ export default function StoryLayout() {
             <div className="choice-grid choice-grid--single">
               <button
                 className="choice-option choice-option--continue"
+                onPointerDown={() => audio.click()}
                 onClick={handleContinue}
               >
                 <span className="choice-badge choice-badge--arrow">→</span>
@@ -448,6 +467,7 @@ export default function StoryLayout() {
               )}
               <button
                 className="choice-option choice-option--continue"
+                onPointerDown={() => audio.click()}
                 onClick={restart}
               >
                 <span className="choice-badge choice-badge--arrow">↺</span>
