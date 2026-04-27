@@ -260,8 +260,16 @@
   background: #dcdcdc;
 }
 
+.choice-option:active:not(:disabled) {
+  background: #c4c4c4;
+}
+
 .choice-option:hover:not(:disabled) .choice-badge {
   background: #c1c1c1;
+}
+
+.choice-option:active:not(:disabled) .choice-badge {
+  background: #a8a8a8;
 }
 
 .choice-option--done {
@@ -285,6 +293,11 @@
 
 .choice-option--continue:hover {
   opacity: 1;
+}
+
+.choice-option--continue:active {
+  opacity: 1;
+  background: #c4c4c4;
 }
 
 .choice-badge {
